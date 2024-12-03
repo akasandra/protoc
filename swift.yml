@@ -1,0 +1,35 @@
+
+
+services:
+
+  protoc-swift:
+    image: ghcr.io/akasandra/protoc-swift:1.3
+    build:
+      context: .
+      dockerfile: swift.Dockerfile
+    restart: no
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "1k"
+        max-file: "3"
+    entrypoint:
+      - /bin/sh
+      - -c
+      - |
+        if [ ! -f /source/${PROTOC_PATH}/*.proto ]; then echo "Nothing .proto in source/${PROTOC_PATH}"; exit 2; fi
+        echo "List of Protobuf files to compile:"
+        find "/source/${PROTOC_PATH}" -type f
+        mkdir -p "/source/${PROTOC_PATH_SWIFT}"
+        echo "Delete old generated files"
+        find "/source/${PROTOC_PATH_SWIFT}" -name '*pb.swift' -o -name '*grpc.swift' | xargs rm -f
+        echo "Generate files at: source/${PROTOC_PATH_SWIFT}"
+        protoc \
+          --proto_path="/source/${PROTOC_PATH}" \
+          --swift_out="/source/${PROTOC_PATH_SWIFT}" \
+          --experimental_allow_proto3_optional \
+          --grpc-swift_out="/source/${PROTOC_PATH_SWIFT}" \
+          --swift_opt=Visibility=Public \
+          --grpc-swift_opt=Visibility=Public \
+          \
+          `echo $(find "/source/${PROTOC_PATH}" -type f)`

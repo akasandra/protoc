@@ -1,0 +1,29 @@
+
+
+services:
+
+  protoc-go:
+    image: ghcr.io/akasandra/protoc-go:1.3
+    build:
+      context: .
+      dockerfile: go.Dockerfile
+    restart: no
+    entrypoint:
+      - /bin/sh
+      - -c
+      - |
+        if [ ! -f /source/${PROTOC_PATH}/*.proto ]; then echo "Nothing .proto in source/${PROTOC_PATH}"; exit 2; fi
+        echo "List of Protobuf files to compile:"
+        find "/source/${PROTOC_PATH}" -type f
+        mkdir -p "/source/${PROTOC_PATH_GO}"
+        echo "Delete old generated files"
+        find /source/${PROTOC_PATH_GO} -name '*pb.go' -o -name '*grpc.go' | xargs rm -f
+        echo "Generate files at: source/${PROTOC_PATH_GO}"
+        protoc \
+          --proto_path="/source/${PROTOC_PATH}" \
+          --go_out="/source/${PROTOC_PATH_GO}" \
+          --go-grpc_out="/source/${PROTOC_PATH_GO}" \
+          --go_opt=paths=source_relative \
+          --go-grpc_opt=paths=source_relative \
+          \
+          `echo $(find "/source/${PROTOC_PATH}" -type f)`
