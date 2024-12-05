@@ -13,14 +13,23 @@ Add submodule "protoc" to **Proto files repository** (`your_project`).
         - swift.yml (swift compiler)
     - "schema"      (PROTOC_PATH)
         - *.proto
-    - "generated/go"          (PROTO_GEN_PATH for go compiler)
-    - "generated/swift"       (PROTO_GEN_PATH for swift compiler)
+    - "generated/go"          (PROTOC_PATH_GO for go compiler)
+    - "generated/swift"       (PROTOC_PATH_SWIFT for swift compiler)
     - docker-compose.yml
 ```
 
 Use **docker-compose.yml** in `your_project` to define containers with mounted `/source`:
 
 ```yml
+
+x-protoc:
+  &x-protoc
+  volumes:
+      - ./:/source:rw
+  environment:
+    PROTO_PATH: schema/ # >>> /source/schema
+    PROTOC_PATH_GO: generated/go
+    PROTOC_PATH_SWIFT: generated/swift
 
 services:
 
@@ -31,33 +40,22 @@ services:
     extends:
       file: protoc/go.yml
       service: protoc-go
-    volumes:
-      - ./:/source:rw
+    <<: *x-protoc
+
 
   swift:
     extends:
       file: protoc/swift.yml
       service: protoc-swift
-    volumes:
-      - ./:/source:rw
-
+    <<: *x-protoc
 ```
 
-Create `.env` file for **compose** commands:
-
-```env
-PROTOC_PATH="schema"
-
-PROTOC_PATH_GO="generated/go"
-PROTOC_PATH_SWIFT="generated/swift"
-```
-
-Once, pull the repo (to avoid build):
+Once, pull images (to avoid build):
 
         $ docker-compose pull
 
 ## Usage
 
-Re-generate files with:
+Generate files with:
 
         $ docker-compose up
