@@ -13,7 +13,3 @@ RUN (cd grpc-swift && swift build -c release --product protoc-gen-swift)
 RUN (cd grpc-swift && swift build -c release --product protoc-gen-grpc-swift)
 
 RUN (cd grpc-swift/.build/release/ && cp protoc-gen-swift protoc-gen-grpc-swift /usr/bin/.)
-
-VOLUME /source
-
-RUN mkdir -p /out/swift
