@@ -1,0 +1,26 @@
+
+services:
+
+  protoc-py-better:
+    image: ghcr.io/akasandra/protoc-py-better:1.3
+    build:
+      context: .
+      dockerfile: py-better.Dockerfile
+    restart: no
+    entrypoint:
+      - /bin/sh
+      - -c
+      - |
+        if [ ! -f /source/$${PROTOC_PATH}/*.proto ]; then echo "Nothing .proto in source/$${PROTOC_PATH}"; exit 2; fi
+        echo "List of Protobuf files to compile:"
+        find "/source/$${PROTOC_PATH}" -type f
+        mkdir -p "/source/$${PROTOC_PATH_PY}"
+        echo "Delete old generated files"
+        find /source/$${PROTOC_PATH_PY} -name '*pb2.py' -o -name '*pb2_grpc.py' | xargs rm -f
+        echo "Generate files at: source/$${PROTOC_PATH_PY}"
+        python -m grpc_tools.protoc \
+          --python_betterproto_out=/source/$${PROTOC_PATH_PY} \
+          --python_betterproto_opt=pydantic_dataclasses \
+          --proto_path="/source/$${PROTOC_PATH}" \
+          \
+          `echo $(find "/source/$${PROTOC_PATH}" -type f)`
