@@ -74,3 +74,27 @@ Once, pull images (to avoid build):
 Generate files with:
 
         $ docker-compose up
+
+
+Hint: Only pull images and use services you need. Dart and Swift images may take up much space (400-900 MiB+)
+
+
+### Versions
+
+ - Python
+   - 3.12
+   - betterproto2==1.0
+   - pydantic models mode, pydantic==2.12.5
+   - [Docs](https://betterproto.github.io/python-betterproto2)
+   - Server/CLient functions are **async**
+
+  - Dart
+    - 3.10.8
+
+  - Swift
+    - 5.9.2 (Xcode 15.2 compatible)
+
+  - Go
+    - 1.25.6
+
+  Using an incompatible version on the generator (compiler) is generally not supported or won't work, your app must be pinned to the listed versions in the user code.

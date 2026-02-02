@@ -16,7 +16,7 @@ services:
         find "/source/$${PROTOC_PATH_PY}" -name '*.py' -delete
 
         # 2. Absolute path to the verified binary
-        PLUGIN_BIN="/usr/local/bin/protoc-gen-python_betterproto"
+        PLUGIN_BIN="/usr/local/bin/protoc-gen-python_betterproto2"
 
         # 3. Compile
         protoc \
@@ -24,4 +24,6 @@ services:
           --proto_path="/source/$${PROTO_SOURCES_DIR}" \
           --python_betterproto_out="/source/$${PROTOC_PATH_PY}" \
           --python_betterproto_opt=pydantic_dataclasses \
+          --python_betterproto_opt=client_generation=async \
+          --python_betterproto_opt=server_generation=async \
           `find "/source/$${PROTO_SOURCES_DIR}" -maxdepth 1 -name "*.proto"`
