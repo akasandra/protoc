@@ -1,0 +1,32 @@
+services:
+  protoc-dart:
+    image: ghcr.io/akasandra/protoc-dart:3.10
+    build:
+      context: .
+      dockerfile: dart.Dockerfile
+      network: host
+    restart: no
+    entrypoint:
+      - /bin/sh
+      - -c
+      - |
+        if [ ! -f /source/$${PROTO_SOURCES_DIR}/*.proto ]; then 
+          echo "Nothing .proto in source/$${PROTO_SOURCES_DIR}"; 
+          exit 2; 
+        fi
+        
+        echo "List of Protobuf files to compile:"
+        find "/source/$${PROTO_SOURCES_DIR}" -name "*.proto"
+        
+        # Use the Dart-specific path variable
+        mkdir -p "/source/$${PROTOC_PATH_DART}"
+        
+        echo "Delete old generated files"
+        find "/source/$${PROTOC_PATH_DART}" -name "*.pb*.dart" | xargs rm -f
+        
+        echo "Generate files at: source/$${PROTOC_PATH_DART}"
+        # --dart_out requires the plugin to be in the PATH (set in your Dockerfile)
+        protoc \
+          --proto_path="/source/$${PROTO_SOURCES_DIR}" \
+          --dart_out="grpc:/source/$${PROTOC_PATH_DART}" \
+          $(find "/source/$${PROTO_SOURCES_DIR}" -type f -name "*.proto")

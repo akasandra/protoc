@@ -1,21 +1,27 @@
 
 
-# Protbuf compiler for docker builds
+# Protobuf compiler for docker builds
 
 ## Setup
 
-Add submodule "protoc" to **Proto files repository** (`your_project`).
+Add submodule "protoc" to **Proto files repository** (`my_project`).
 
 ```
-- your_project
+- my_project
+
     - protoc        (this repository - git submodule)
         - go.yml    (go compiler)
         - swift.yml (swift compiler)
+        - dart, py, etc ...
+
     - "schema"      (PROTO_SOURCES_DIR)
         - *.proto
+
     - "generated/go"          (PROTOC_PATH_GO for go compiler)
     - "generated/swift"       (PROTOC_PATH_SWIFT for swift compiler)
-    - docker-compose.yml
+    - dart,py, etc..
+
+    - docker-compose.yml    (config, see example below)
 ```
 
 Use **docker-compose.yml** in `your_project` to define containers with mounted `/source`:
@@ -27,9 +33,11 @@ x-protoc:
   volumes:
       - ./:/source:rw
   environment:
-    SOURCES_DIR: schema/ # >>> /source/schema
-    PROTOC_PATH_GO: generated/go
+    PROTO_SOURCES_DIR: ./schema
     PROTOC_PATH_SWIFT: generated/swift
+    PROTOC_PATH_GO: generated/go
+    PROTOC_PATH_PY: generated/py
+    PROTOC_PATH_DART: generated/dart
 
 services:
 
