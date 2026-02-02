@@ -1,0 +1,33 @@
+services:
+  protoc-dart-web:
+    image: ghcr.io/akasandra/protoc-dart-web:3.10
+    build:
+      context: .
+      dockerfile: dart-web.Dockerfile
+      network: host
+    restart: no
+    entrypoint:
+      - /bin/sh
+      - -c
+      - |
+        if [ ! -f /source/$${PROTO_SOURCES_DIR}/*.proto ]; then 
+          echo "Nothing .proto in source/$${PROTO_SOURCES_DIR}"; 
+          exit 2; 
+        fi
+        
+        echo "List of Protobuf files to compile:"
+        find "/source/$${PROTO_SOURCES_DIR}" -name "*.proto"
+        
+        # Use the Dart-Web-specific path variable
+        mkdir -p "/source/$${PROTOC_PATH_DART_WEB}"
+        
+        echo "Delete old generated files"
+        find "/source/$${PROTOC_PATH_DART_WEB}" -name "*.pb*.dart" | xargs rm -f
+        
+        echo "Generate gRPC-Web compatible files at: source/$${PROTOC_PATH_DART_WEB}"
+        # Generate with grpc-web plugin instead of standard grpc
+        protoc \
+          --proto_path="/source/$${PROTO_SOURCES_DIR}" \
+          --dart_out="grpc:/source/$${PROTOC_PATH_DART_WEB}" \
+          --plugin=protoc-gen-dart=/root/.pub-cache/bin/protoc-gen-dart \
+          $(find "/source/$${PROTO_SOURCES_DIR}" -type f -name "*.proto")

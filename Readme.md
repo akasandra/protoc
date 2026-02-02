@@ -40,6 +40,7 @@ x-protoc:
     PROTOC_PATH_GO: generated/go
     PROTOC_PATH_PY: generated/py
     PROTOC_PATH_DART: generated/dart
+    PROTOC_PATH_DART_WEB: generated/dart-web
 
 services:
 
@@ -69,6 +70,12 @@ services:
       file: protoc/dart.yml
       service: protoc-dart
     <<: *x-protoc
+
+  dart-web:
+    extends:
+      file: protoc/dart-web.yml
+      service: protoc-dart-web
+    <<: *x-protoc
 ```
 
 Pull images to avoid build:
@@ -80,6 +87,22 @@ Pull images to avoid build:
 Generate files with:
 
         $ docker-compose up
+
+### Dart Code Generation
+
+For **native platforms** (iOS, Android, desktop):
+```bash
+docker-compose -f dart.yml run protoc-dart
+```
+Generates bindings in `generated/dart/` using native gRPC transport.
+
+For **Flutter Web** (browser-based PWA):
+```bash
+docker-compose -f dart-web.yml run protoc-dart-web
+```
+Generates bindings in `generated/dart-web/` using gRPC-Web transport (requires Envoy proxy on server).
+
+See [GRPC_WEB_SETUP.md](../GRPC_WEB_SETUP.md) and [FLUTTER_WEB_SETUP.md](../FLUTTER_WEB_SETUP.md) for full implementation details.
 
 
 
@@ -96,6 +119,8 @@ Generate files with:
 
   - Dart
     - 3.10.8
+    - Native gRPC: Standard `protoc_plugin` for native platforms
+    - gRPC-Web: Same bindings with XHR browser transport (requires Envoy proxy)
 
   - Swift
     - 5.9.2 (Xcode 15.2 compatible)
