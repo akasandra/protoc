@@ -24,9 +24,10 @@ services:
         echo "Delete old generated files"
         find "/source/$${PROTOC_PATH_DART}" -name "*.pb*.dart" | xargs rm -f
         
-        echo "Generate files at: source/$${PROTOC_PATH_DART}"
-        # --dart_out requires the plugin to be in the PATH (set in your Dockerfile)
+        echo "Generate gRPC-Web compatible files at: source/$${PROTOC_PATH_DART}"
+        # Generate with grpc-web plugin instead of standard grpc
         protoc \
           --proto_path="/source/$${PROTO_SOURCES_DIR}" \
           --dart_out="grpc:/source/$${PROTOC_PATH_DART}" \
+          --plugin=protoc-gen-dart=/root/.pub-cache/bin/protoc-gen-dart \
           $(find "/source/$${PROTO_SOURCES_DIR}" -type f -name "*.proto")

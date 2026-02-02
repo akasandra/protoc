@@ -40,7 +40,7 @@ x-protoc:
     PROTOC_PATH_GO: generated/go
     PROTOC_PATH_PY: generated/py
     PROTOC_PATH_DART: generated/dart
-    PROTOC_PATH_DART_WEB: generated/dart-web
+    PROTOC_PATH_DART: generated/dart-web
 
 services:
 
@@ -58,7 +58,6 @@ services:
       service: protoc-py-better
     <<: *x-protoc
 
-
   swift:
     extends:
       file: protoc/swift.yml
@@ -69,12 +68,6 @@ services:
     extends:
       file: protoc/dart.yml
       service: protoc-dart
-    <<: *x-protoc
-
-  dart-web:
-    extends:
-      file: protoc/dart-web.yml
-      service: protoc-dart-web
     <<: *x-protoc
 ```
 
@@ -128,4 +121,4 @@ See [GRPC_WEB_SETUP.md](../GRPC_WEB_SETUP.md) and [FLUTTER_WEB_SETUP.md](../FLUT
   - Go
     - 1.25.6
 
-  Using an incompatible version on the generator (compiler) is generally not supported or won't work, your app must be pinned to the listed versions in the user code.
+  Using an incompatible version on the generator (compiler) vs. the user app may be not supported or won't work, better pin user code to the listed versions

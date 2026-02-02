@@ -7,7 +7,7 @@ RUN echo 'Acquire::http::Proxy "http://host.containers.internal:3142";' > /etc/a
 RUN echo 'Acquire::https::Proxy "false";' >> /etc/apt/apt.conf.d/01proxy
 RUN apt update
 
-# Install protoc and the dart-protoc-plugin
 RUN apt install -y protobuf-compiler
 RUN dart pub global activate protoc_plugin
-ENV PATH="$PATH":"/root/.pub-cache/bin"
+
+ENV PATH="$PATH:$HOME/.pub-cache/bin"
