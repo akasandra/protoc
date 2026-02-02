@@ -1,10 +1,8 @@
 
 
-# Protobuf compiler for docker builds
+# Protobuf compiler for Compose
 
 ## Setup
-
-Add submodule "protoc" to **Proto files repository** (`my_project`).
 
 ```
 - my_project
@@ -32,7 +30,11 @@ x-protoc:
   &x-protoc
   volumes:
       - ./:/source:rw
-  environment:
+  environment: 
+
+    # Settings for generation
+    # See: https://github.com/akasandra/protoc
+
     PROTO_SOURCES_DIR: ./schema
     PROTOC_PATH_SWIFT: generated/swift
     PROTOC_PATH_GO: generated/go
@@ -41,8 +43,7 @@ x-protoc:
 
 services:
 
-  # Protobuf code generation for docker builds
-  # See: https://github.com/akasandra/protoc
+  # Compiler containers
 
   go:
     extends:
@@ -70,7 +71,7 @@ services:
     <<: *x-protoc
 ```
 
-Once, pull images (to avoid build):
+Pull images to avoid build:
 
         $ docker-compose pull
 
@@ -81,10 +82,10 @@ Generate files with:
         $ docker-compose up
 
 
-Hint: Only pull images and use services you need. Dart and Swift images may take up much space (400-900 MiB+)
 
+> Only pull images and use services you need. Dart and Swift images may take up much space (400-900 MiB+)
 
-### Versions
+# Versions
 
  - Python
    - 3.12 
