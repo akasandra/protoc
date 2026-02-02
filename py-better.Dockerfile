@@ -1,5 +1,5 @@
 
-FROM python:3.9.21-alpine
+FROM python:3.12-alpine
 
 RUN apk update
 RUN apk add protobuf-dev 

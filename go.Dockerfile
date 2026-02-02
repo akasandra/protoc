@@ -1,5 +1,5 @@
 
-FROM golang:1.23.3-alpine
+FROM golang:1.25.6-alpine
 
 RUN apk add --update protobuf-dev protobuf git
 RUN go install github.com/golang/protobuf/protoc-gen-go@v1.5.4

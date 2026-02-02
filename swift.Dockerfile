@@ -1,5 +1,5 @@
 
-FROM swift:5.8.1
+FROM swift:5.9.2-focal-slim
 
 RUN apt update
 RUN apt install -y libprotobuf-dev protobuf-compiler git make
