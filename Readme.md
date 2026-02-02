@@ -81,26 +81,6 @@ Generate files with:
 
         $ docker-compose up
 
-### Dart Code Generation
-
-For **native platforms** (iOS, Android, desktop):
-```bash
-docker-compose -f dart.yml run protoc-dart
-```
-Generates bindings in `generated/dart/` using native gRPC transport.
-
-For **Flutter Web** (browser-based PWA):
-```bash
-docker-compose -f dart-web.yml run protoc-dart-web
-```
-Generates bindings in `generated/dart-web/` using gRPC-Web transport (requires Envoy proxy on server).
-
-See [GRPC_WEB_SETUP.md](../GRPC_WEB_SETUP.md) and [FLUTTER_WEB_SETUP.md](../FLUTTER_WEB_SETUP.md) for full implementation details.
-
-
-
-> Only pull images and use services you need. Dart and Swift images may take up much space (400-900 MiB+)
-
 # Versions
 
  - Python
