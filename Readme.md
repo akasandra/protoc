@@ -82,7 +82,7 @@ Hint: Only pull images and use services you need. Dart and Swift images may take
 ### Versions
 
  - Python
-   - 3.12
+   - 3.12 
    - betterproto2==1.0
    - pydantic models mode, pydantic==2.12.5
    - [Docs](https://betterproto.github.io/python-betterproto2)
