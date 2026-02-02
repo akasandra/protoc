@@ -11,7 +11,7 @@ Add submodule "protoc" to **Proto files repository** (`your_project`).
     - protoc        (this repository - git submodule)
         - go.yml    (go compiler)
         - swift.yml (swift compiler)
-    - "schema"      (PROTOC_PATH)
+    - "schema"      (PROTO_SOURCES_DIR)
         - *.proto
     - "generated/go"          (PROTOC_PATH_GO for go compiler)
     - "generated/swift"       (PROTOC_PATH_SWIFT for swift compiler)
@@ -27,7 +27,7 @@ x-protoc:
   volumes:
       - ./:/source:rw
   environment:
-    PROTO_PATH: schema/ # >>> /source/schema
+    SOURCES_DIR: schema/ # >>> /source/schema
     PROTOC_PATH_GO: generated/go
     PROTOC_PATH_SWIFT: generated/swift
 
