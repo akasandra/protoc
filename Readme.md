@@ -48,6 +48,13 @@ services:
       file: protoc/swift.yml
       service: protoc-swift
     <<: *x-protoc
+
+
+  py:
+    extends:
+      file: protoc/py.yml
+      service: protoc-py-better
+    <<: *x-protoc
 ```
 
 Once, pull images (to avoid build):

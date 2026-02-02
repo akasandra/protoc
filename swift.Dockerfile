@@ -19,8 +19,8 @@ VOLUME /swift-cache
 VOLUME /grpc-swift/.build
 RUN (cd grpc-swift && swift package resolve)
 
-RUN (cd grpc-swift && swift build -j 12 -c release --product protoc-gen-swift)
-RUN (cd grpc-swift && swift build -j 12 -c release --product protoc-gen-grpc-swift)
+RUN (cd grpc-swift && swift build -j 6 -c release --product protoc-gen-swift)
+RUN (cd grpc-swift && swift build -j 6 -c release --product protoc-gen-grpc-swift)
 
 RUN (cd grpc-swift/.build/release/ && cp protoc-gen-swift protoc-gen-grpc-swift /usr/bin/.)
 
