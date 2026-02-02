@@ -50,6 +50,12 @@ services:
       service: protoc-go
     <<: *x-protoc
 
+  py:
+    extends:
+      file: protoc/py.yml
+      service: protoc-py-better
+    <<: *x-protoc
+
 
   swift:
     extends:
@@ -57,11 +63,10 @@ services:
       service: protoc-swift
     <<: *x-protoc
 
-
-  py:
+  dart:
     extends:
-      file: protoc/py.yml
-      service: protoc-py-better
+      file: protoc/dart.yml
+      service: protoc-dart
     <<: *x-protoc
 ```
 
